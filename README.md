@@ -74,6 +74,7 @@ python src/main.py
 
 ### 🎥 Demo
 *([Link to Demo Video Here](https://youtu.be/LLYlXACX97A))*
+(Voice features not demonstrated in the video*)
 
 ---
 
