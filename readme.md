@@ -74,7 +74,7 @@ python src/main.py
 
 ## 🎥 Demo
 
-## [🎬 Demo Video](#) *(Link to Demo Video Here)*
+# [Demo Video](#) *(Link to Demo Video Here)*
 
 ---
 
