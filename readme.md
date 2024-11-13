@@ -72,20 +72,9 @@ python src/main.py
 
 ---
 
-## 🎥 Demos & Media
+## 🎥 Demo
 
-### [🎬 Demo Video](#) *(Link to Demo Video Here)*
-
-### Screenshots
-
-- **Voice-Activated Commands**  
-  ![Screenshot 1 - Voice Command](#) *(Place Image Link Here)*
-
-- **Data Visualization Example**  
-  ![Screenshot 2 - Graph Generation](#) *(Place Image Link Here)*
-
-- **System Control Interface**  
-  ![Screenshot 3 - File Management](#) *(Place Image Link Here)*
+## [🎬 Demo Video](#) *(Link to Demo Video Here)*
 
 ---
 
