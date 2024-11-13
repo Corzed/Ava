@@ -39,7 +39,7 @@ Ava/
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/ava.git
+   git clone https://github.com/corzed/ava.git
    cd ava
    ```
 
