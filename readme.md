@@ -1,4 +1,4 @@
-# 🌌 Ava - The Advanced Virtual Assistant 🌌
+# 🌌 A.v.a. - Advanced Virtual Assistant 🌌
 
 > **An AI-powered digital assistant that doesn’t just respond – it takes action. From coding entire applications to creating data visualizations, Ava brings the power of automation directly to your desktop.**
 
