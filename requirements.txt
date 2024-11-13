@@ -1,0 +1,11 @@
+openai                    # OpenAI API access
+python-dotenv             # For .env file handling
+psutil                    # System and process utilities
+matplotlib                # Plotting library
+pyperclip                 # Clipboard handling
+keyboard                  # Keyboard event handling
+ttkthemes                 # Themes for Tkinter GUIs
+SpeechRecognition         # Speech recognition (note the capital "S" and "R")
+pyttsx3                   # Offline text-to-speech library
+pygame                    # Multimedia library (audio, images, etc.)
+google-auth               # Google authentication (or google-auth-oauthlib if OAuth is used)
