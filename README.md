@@ -8,7 +8,7 @@ Designed to handle complex computer operations, Ava can code, control your syste
 
 ## 🚀 Features
 
-- **🎙️ Natural Voice Control**: Interact hands-free! Speak naturally to Ava using commands like, “Ava, generate a report” or “Ava, make a website for me.” You can simply say "Ava" to wake it up and start giving commands.
+- **🎙️ Natural Voice Control**: Interact hands-free! Speak naturally to Ava using commands like, “Ava, generate a report” or “Ava, make a website for me.” You can simply say "Ava" to initiate a command.
 - **💡 Real-Time Automation**: Ava can transform simple voice commands, such as "create me a website," into actionable code, generating an app or site instantly without human intervention.
 - **📊 Data Visualization**: Need a quick chart or graph? Ava can instantly create and customize visualizations based on your data, turning insights into visuals with ease.
 - **🖥️ System Control**: Automate your workflows with Ava’s ability to manage files, execute terminal commands, and perform other system-level tasks directly on your computer.
@@ -64,7 +64,7 @@ python src/main.py
 ```
 
 ### Using Ava:
-1. **Wake Command**: Say “Ava” to activate voice listening.
+1. **Wake Command**: Say “Ava” to initiate a command.
 2. **Voice Commands**: Give commands like:
    - **"Ava, generate a bar chart of my sales data"**
    - **"Ava, code me a simple calculator app"**
