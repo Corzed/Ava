@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 load_dotenv(os.path.join(os.path.dirname(__file__), '..', 'config', '.env'))
 
 class AIAssistant:
-    def __init__(self):
+    def __init__(self, log_callback=None):
         self.api_key = os.getenv('OPENAI_API_KEY')
         self.model = os.getenv('OPENAI_MODEL')
         if not self.api_key:
@@ -38,6 +38,14 @@ class AIAssistant:
         self.current_run_id: str = None
         self.log_messages: List[str] = []
         self.system_info = self.get_system_info()
+        self.log_callback = log_callback  # Callback to send logs to GUI
+    
+    def log_to_terminal(self, message: str) -> None:
+        """Send a message to the terminal via callback."""
+        if self.log_callback:
+            self.log_callback(message)
+        else:
+            self.log(f"Log (no callback): {message}")
 
     @lru_cache(maxsize=1)
     def get_system_info(self) -> Dict[str, Any]:
@@ -46,7 +54,6 @@ class AIAssistant:
                 "os": platform.system(),
                 "processor": platform.processor(),
                 "architecture": platform.architecture()[0],
-                "username": os.getlogin(),
                 "home_dir": os.path.expanduser("~"),
                 "total_memory": psutil.virtual_memory().total,
                 "available_memory": psutil.virtual_memory().available,
@@ -64,7 +71,7 @@ class AIAssistant:
             assistant = self.client.beta.assistants.create(
                 name="Ava",
                 instructions=f"""You are a voice-controlled AI assistant capable of performing actions on the local machine your name is Ava. 
-                Provide concise and natural-sounding responses suitable for voice interaction. Do not include any formatting like the use of * in your response. You have access to the following system information:
+                Provide concise and natural-sounding responses suitable for conversations. Do not include any formatting like the use of * in your response. You have access to the following system information:
                 {system_info_str}
                 Use this information to make informed decisions about file paths and system capabilities.""",
                 model=self.model,
@@ -285,17 +292,41 @@ class AIAssistant:
         command = args.get("command")
         if not command:
             return "Error: No command provided for execute_terminal_command"
-        
-        try:
-            result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
-            output = result.stdout.strip()
-            self.log(f"Command executed successfully: {command}")
-            self.log(f"Command output: {output}")
-            return f"Command executed successfully. Output:\n{output}"
-        except subprocess.CalledProcessError as e:
-            error_message = f"Error executing command: {str(e)}\nOutput: {e.output}\nError: {e.stderr}"
-            self.log(error_message)
-            return error_message
+
+        def run_command():
+            try:
+                process = subprocess.Popen(
+                    command,
+                    shell=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True
+                )
+                self.log(f"Running command: {command}")
+
+                # Read stdout and stderr line by line
+                for line in iter(process.stdout.readline, ''):
+                    self.log_to_terminal(f"OUTPUT: {line.strip()}")
+
+                for line in iter(process.stderr.readline, ''):
+                    self.log_to_terminal(f"ERROR: {line.strip()}")
+
+                process.stdout.close()
+                process.stderr.close()
+                process.wait()
+
+                if process.returncode == 0:
+                    self.log_to_terminal(f"Command '{command}' completed successfully.")
+                else:
+                    self.log_to_terminal(f"Command failed with return code {process.returncode}.")
+            except Exception as e:
+                error_message = f"Error while running command: {e}"
+                self.log_to_terminal(error_message)
+
+        threading.Thread(target=run_command, daemon=True).start()
+        return f"Command '{command}' is running. Check the terminal for logs."
+
+
 
     def create_file(self, args: Dict[str, Any]) -> str:
         filepath = args.get("filepath")
