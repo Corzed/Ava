@@ -185,6 +185,7 @@ class AIAssistantGUI:
             self.terminal.see(tk.END)
         self.master.after(100, self.update_terminal)
 
+
     def on_closing(self):
         self.add_terminal_message("System: Deleting AI Assistant...")
         self.listening_enabled = False
