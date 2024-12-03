@@ -43,7 +43,7 @@ class SpeechRecognizer:
     def _listen_for_wake_word(self, source):
         try:
             print("Listening for wake word...")
-            audio = self.recognizer.listen(source, timeout=1, phrase_time_limit=5)
+            audio = self.recognizer.listen(source, timeout=5, phrase_time_limit=25)
             text = self.recognizer.recognize_google(audio).lower()
             print(f"Heard: {text}")
             self._trigger_callback('partial_recognition', text=f"Heard: {text}")
@@ -61,7 +61,7 @@ class SpeechRecognizer:
     def _listen_for_command(self, source):
         print("Listening for command...")
         try:
-            audio = self.recognizer.listen(source, timeout=5, phrase_time_limit=10)
+            audio = self.recognizer.listen(source, timeout=15, phrase_time_limit=30)
             command_text = self.recognizer.recognize_google(audio)
             print(f"Recognized: {command_text}")
             self._trigger_callback('command_finished', text=command_text)
@@ -82,7 +82,7 @@ class SpeechRecognizer:
         start_time = time.time()
         try:
             while time.time() - start_time < self.answer_timeout:
-                audio = self.recognizer.listen(source, timeout=1, phrase_time_limit=5)
+                audio = self.recognizer.listen(source, timeout=15, phrase_time_limit=30)
                 try:
                     text = self.recognizer.recognize_google(audio).lower()
                     print(f"Heard: {text}")
