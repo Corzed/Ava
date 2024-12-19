@@ -13,6 +13,9 @@ import threading
 import subprocess
 from functools import lru_cache
 from typing import Dict, Any, List
+import pyautogui
+import base64
+import io
 
 # Use Matplotlib's 'agg' backend to avoid GUI issues
 import matplotlib
@@ -76,6 +79,17 @@ class AIAssistant:
                 Use this information to make informed decisions about file paths and system capabilities.""",
                 model=self.model,
                 tools=[
+                    {"type": "function", "function": {
+                    "name": "vision",
+                    "description": "Captures the screen and analyzes it using the OpenAI Vision API. Can answer queries about specific elements or provide a general description.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "query": {"type": "string", "description": "The question or task for analyzing the screen"}
+                        },
+                        "required": ["query"]
+                    }
+                }},
                     {"type": "function", "function": {
                         "name": "create_file",
                         "description": "Creates a new file on the local machine",
@@ -203,6 +217,7 @@ class AIAssistant:
         self.log(f"Arguments: {args}")
 
         tool_functions = {
+            "vision": lambda x: self.vision(x.get("query")),
             "create_file": self.create_file,
             "edit_file": self.edit_file,
             "search_files": self.search_files,
@@ -272,6 +287,45 @@ class AIAssistant:
             error_message = f"Error deleting file: {str(e)}"
             self.log(error_message)
             return error_message
+    
+    def vision(self, query):
+        """Captures the screen and analyzes it using the OpenAI Vision API."""
+        try:
+            # Capture the screen
+            screenshot = pyautogui.screenshot()
+        
+            # Convert the screenshot to a base64-encoded string
+            img_buffer = io.BytesIO()
+            screenshot.save(img_buffer, format="PNG")
+            img_buffer.seek(0)
+            base64_image = base64.b64encode(img_buffer.read()).decode("utf-8")
+            # Call the OpenAI Vision API with the base64 image
+            response = openai.chat.completions.create(
+                model="gpt-4o-mini",  # Replace with the desired model version
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "text", "text": query},
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:image/png;base64,{base64_image}",
+                                    "detail": "auto"  # Can be 'low', 'high', or 'auto' based on requirements
+                                },
+                            },
+                        ],
+                    }
+                ],
+            )
+            
+            # Extract and return the response content
+            result = response.choices[0].message.content
+            print("Vision tool output: " + result)
+            return result
+
+        except Exception as e:
+            return f"Error analyzing screen: {e}"
         
     def read_file(self, args: Dict[str, Any]) -> str:
         filepath = args.get("filepath")
