@@ -12,3 +12,5 @@ google-auth               # Google authentication (or google-auth-oauthlib if OA
 pyautogui                 # Libraries for Visual processing below
 base64
 io
+webrtcvad                 #Speech helper library
+wave                      #Speech helper library
