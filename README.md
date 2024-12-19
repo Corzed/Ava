@@ -2,7 +2,7 @@
 
 > **An AI-powered digital assistant that doesn’t just respond – it takes action. From coding entire applications to creating data visualizations, Ava brings the power of automation directly to your desktop.**
 
-Designed to handle complex computer operations, Ava can code, control your system, visualize data, and much more—all triggered by simple commands. Just **talk to Ava**, say what you need, and watch it take action.
+Designed to handle complex computer operations, Ava can code, control your system, visualize data, take an interpret screenshots, and much more—all triggered by simple commands. Just **talk to Ava**, say what you need, and watch it take action.
 
 ---
 
