@@ -77,6 +77,21 @@ class AIAssistantGUI:
         self.toggle_button = ttk.Button(control_frame, text="Enable Listening", command=self.toggle_listening, style='Accent.TButton')
         self.toggle_button.pack(side=tk.RIGHT, padx=(10, 0))
 
+        # Wake Word Toggle
+        self.wake_word_var = tk.BooleanVar(value=True)  # Default to enabled
+        self.wake_word_toggle = ttk.Checkbutton(
+            control_frame,
+            text="Wake Word",
+            variable=self.wake_word_var,
+            command=self.toggle_wake_word
+        )
+        self.wake_word_toggle.pack(side=tk.BOTTOM, pady=10)
+
+    def toggle_wake_word(self):
+        self.speech_recognizer.use_wake_word = self.wake_word_var.get()
+        status = "enabled" if self.speech_recognizer.use_wake_word else "disabled"
+        self.add_terminal_message(f"Wake word usage {status}.")
+
     def setup_assistant(self):
         def setup():
             self.ai_assistant.setup_assistant()
@@ -98,6 +113,12 @@ class AIAssistantGUI:
             self.status_label.config(text="Voice recognition is off")
             self.speech_recognizer.stop_listening()
             self.add_terminal_message("System: Voice recognition disabled.")
+
+    def toggle_wake_word(self):
+        current_state = self.speech_recognizer.use_wake_word
+        self.speech_recognizer.use_wake_word = not current_state
+        status = "enabled" if self.speech_recognizer.use_wake_word else "disabled"
+        self.add_terminal_message(f"Wake word usage {status}.")
 
     def speech_recognizer_callback(self, event, text=None):
         print(f"speech_recognizer_callback received event: {event}, text: {text}")
@@ -123,7 +144,7 @@ class AIAssistantGUI:
         self.add_terminal_message("System: Wake word 'Ava' detected.")
         self.text_to_speech.speak("Listening")
 
-    def command_received(self, command):
+    def command_received(self, command=None):
         if command:
             self.add_terminal_message(f"Command recognized: {command}")
             self.process_input(command)
@@ -131,6 +152,7 @@ class AIAssistantGUI:
             self.status_label.config(text="Say 'Ava' to wake me up!")
             self.add_terminal_message("System: No command detected.")
             self.text_to_speech.speak("I didn't catch that. Please try again.")
+
 
     def send_text_input(self, event=None):
         user_input = self.text_input.get()
@@ -184,7 +206,6 @@ class AIAssistantGUI:
             self.terminal.config(state=tk.DISABLED)
             self.terminal.see(tk.END)
         self.master.after(100, self.update_terminal)
-
 
     def on_closing(self):
         self.add_terminal_message("System: Deleting AI Assistant...")
