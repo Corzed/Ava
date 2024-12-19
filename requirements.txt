@@ -9,3 +9,6 @@ SpeechRecognition         # Speech recognition (note the capital "S" and "R")
 pyttsx3                   # Offline text-to-speech library
 pygame                    # Multimedia library (audio, images, etc.)
 google-auth               # Google authentication (or google-auth-oauthlib if OAuth is used)
+pyautogui                 # Libraries for Visual processing below
+base64
+io
