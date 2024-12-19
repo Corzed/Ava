@@ -64,7 +64,7 @@ python src/main.py
 ```
 
 ### Using Ava:
-1. **Wake Command**: Say “Ava” to initiate a command.
+1. **Wake Command**: Say “Ava” to initiate a command. (optional no wake command mode)
 2. **Voice Commands**: Give commands like:
    - **"Ava, generate a bar chart of my sales data"**
    - **"Ava, code me a simple calculator app"**
